@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CrediVault
+
+CrediVault is a decentralized borrowing protocol where users can lock BTC (or any ERC-20 token like WBTC on Core Chain) as collateral to borrow USDT (mock stablecoin).  
+This project is a full-stack dApp built with Next.js 15 (App Router), Tailwind CSS, Ethers.js/Wagmi, Solidity, and Hardhat.
+
+---
+
+## Features
+
+- **Connect Wallet** (MetaMask or Core Wallet)
+- **Deposit WBTC** as collateral
+- **Borrow USDT** (mock stablecoin) up to a fixed Loan-To-Value (LTV) ratio (e.g., 70%)
+- **Track**: Collateral, Loan Issued, LTV Ratio
+- **Repay**: Full or partial repayment
+- **Withdraw**: Collateral after repayment
+
+---
+
+## Tech Stack
+
+- **Frontend:** Next.js 15 (App Router), Tailwind CSS, Wagmi/Ethers.js
+- **Smart Contracts:** Solidity (EVM-compatible, Core Chain), Hardhat (local deployment)
+- **Tokens:** Mock WBTC & USDT (ERC20)
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone & Install
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/CrediVault.git
+cd CrediVault
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Run Local Blockchain (Hardhat)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cd contracts
+npm install
+npx hardhat node
+npm install wagmi ethers viem
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Deploy Contracts
 
-## Learn More
+In a new terminal:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+cd contracts
+npx hardhat run scripts/deploy.ts --network localhost
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Start the Frontend
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+cd ..
+npm run dev
+```
 
-## Deploy on Vercel
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+- `/app` - Next.js App Router pages
+- `/components` - Tailwind-based UI components
+- `/hooks` - Type-safe Wagmi/Ethers hooks
+- `/contracts` - Solidity contracts, Hardhat config/scripts
+
+---
+
+## Frontend Pages
+
+- `/` - Landing Page + Connect Wallet
+- `/dashboard` - User vault summary (collateral, loan, actions)
+- `/deposit` - Lock WBTC
+- `/borrow` - Borrow USDT
+- `/repay` - Repay loan
+- `/withdraw` - Withdraw collateral
+
+---
+
+## Smart Contracts
+
+- **MockERC20.sol** - WBTC & USDT tokens
+- **Vault.sol** - Main protocol logic:
+  - `lockCollateral(address token, uint amount)`
+  - `borrowStablecoin(uint amount)`
+  - `repayLoan(uint amount)`
+  - `withdrawCollateral()`
+  - View loan status
+
+---
+
+## Development
+
+- Tailwind CSS for UI
+- Reusable contract interaction functions
+- Type-safe hooks (Wagmi/Ethers)
+- Local contract deployment via Hardhat
+
+---
+
+## Future Features
+
+- Interest rates
+- Auto-liquidation
+- Multi-asset support
+- Admin dashboard
+
+---
+
+## License
+
+MIT
